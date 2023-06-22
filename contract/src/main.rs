@@ -17,7 +17,7 @@ extern crate alloc;
 
 use alloc::{
     collections::BTreeMap,
-    string::{String, ToString}, vec::Vec,
+    string::{String, ToString},
 };
 
 use casper_contract::{
@@ -25,7 +25,7 @@ use casper_contract::{
     unwrap_or_revert::UnwrapOrRevert,
 };
 
-use casper_types::{contracts::NamedKeys, ApiError, RuntimeArgs, CLTyped, bytesrepr::ToBytes, CLType, Error};
+use casper_types::{contracts::NamedKeys, ApiError, RuntimeArgs};
 use entry_points::mk_entry_points;
 
 mod constants;
@@ -102,34 +102,6 @@ fn install_contract() {
     )
 }
 
-#[derive(Debug)]
-struct State {
-    st: String,
-    b: bo
-}
-
-impl State {
-    fn new() -> Self {
-        Self {st: String::from("")}
-    }
-}
-
-impl CLTyped for State {
-    fn cl_type() -> CLType {
-        CLType::Any
-    }
-}
-
-impl ToBytes for State {
-    fn to_bytes(&self) -> core::result::Result<Vec<u8>, casper_types::bytesrepr::Error> {
-        self.st.to_bytes()
-    }
-
-    fn serialized_length(&self) -> usize {
-        todo!()
-    }
-}
-
 #[no_mangle]
 pub extern "C" fn init() {
     // Beware: it is up to Contract author to make sure that Caontract
@@ -144,7 +116,7 @@ pub extern "C" fn init() {
     storage::named_dictionary_put(
         constants::registry::DICT,
         constants::registry::REGISTRY_MAP,
-        State::new(),
+        empty_map,
     );
 
     // Initialize events provided by `casper-event-standard` lib.
